@@ -9,6 +9,8 @@ public class GameManager : MonoBehaviour {
     [Header("Variables")]
     public GameObject player;
     public GameObject gameover;
+    public GameObject levelcomplete;
+    public Animator sceneanim;
 
     [Header("Respawn Position")]
     public Vector3 RespawnPosition;
@@ -16,12 +18,15 @@ public class GameManager : MonoBehaviour {
     [Header("Level")]
     public int levelNumber;
 
+
+
     
 
 
     // Use this for initialization
     void Start () {
-		
+        sceneanim.SetBool("open", false);
+        PlayerPrefs.SetInt("Level" + "0", 1);
 	}
 
     //toggle buttons
@@ -34,13 +39,37 @@ public class GameManager : MonoBehaviour {
 
     // Teleport player to start/checkpoint position
     void Respawn () {
+        levelcomplete.SetActive(false);
         player.transform.position = RespawnPosition;
         Respawnbutton(false);
 	}
 
+    // Set Level as compelete when finished
     public void LevelComplete() {
+        StartCoroutine(levelcompletescreen());
         PlayerPrefs.SetInt("Level" + levelNumber.ToString(), 1);
         PlayerPrefs.Save();
         PlayerPrefs.GetInt("Level" + levelNumber.ToString());
+    }
+
+    // Load Scene
+    public void SceneLoad(int ctl) {
+        StartCoroutine(LoadScene(ctl));
+
+
+
+    }
+    IEnumerator LoadScene(int ctl)
+    {
+        sceneanim.SetBool("open", true);
+        yield return new WaitForSeconds(0.3f);
+        SceneManager.LoadScene(ctl);
+    }
+    IEnumerator levelcompletescreen()
+    {
+        
+        yield return new WaitForSeconds(1f);
+        levelcomplete.SetActive(true);
+        player.GetComponent<PlayerMovement>().enabled = false;
     }
 }

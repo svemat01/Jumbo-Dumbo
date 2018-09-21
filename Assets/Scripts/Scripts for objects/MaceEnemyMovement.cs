@@ -11,13 +11,16 @@ public class MaceEnemyMovement : MonoBehaviour {
     public float speed = 10;
     bool Up = true;
 
+    public bool rotate;
+
     //Refrence to GameManager
-    public GameObject gamemanager;
+    GameObject gamemanager;
 
     float time = 0;
 
     void Start()
     {
+        gamemanager = GameObject.Find("GameManager");
         origin = transform.position;
         Debug.Log(transform.position);
         StartCoroutine(GoDown());
@@ -59,9 +62,13 @@ public class MaceEnemyMovement : MonoBehaviour {
         {
             StartCoroutine(GoDown());
         }
-        else if (Up == false)
+        if (Up == false)
         {
             transform.position = Vector3.MoveTowards(transform.position, origin, speed * Time.deltaTime);
+        }
+
+        if (rotate == true) {
+            transform.Rotate(0, 0, -5);
         }
     }
 
