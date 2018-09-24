@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class MainMenuManager : MonoBehaviour {
@@ -10,10 +11,12 @@ public class MainMenuManager : MonoBehaviour {
     public GameObject Settings;
     public GameObject Levels;
     public GameObject Back;
+    public Slider slider;
 
 
     public Animator sceneanim;
-
+    public GameObject gamemanager;
+    public AudioSource gma;
 
 
   
@@ -25,7 +28,13 @@ public class MainMenuManager : MonoBehaviour {
 	}
     public void Start()
     {
-        StartCoroutine(mainmenu());
+        //StartCoroutine(mainmenu());
+        gamemanager = GameObject.Find("GameManager");
+
+        gma = gamemanager.GetComponent<AudioSource>();
+        slider.value = PlayerPrefs.GetFloat("volume");
+
+
 
     }
 	
@@ -43,26 +52,35 @@ public class MainMenuManager : MonoBehaviour {
     {
         StartCoroutine(levels());
     }
+
+    public void volumechange() {
+        gma.volume = slider.value;
+
+        PlayerPrefs.SetFloat("volume", slider.value);
+        PlayerPrefs.Save();
+    }
+
     IEnumerator levels()
     {
+        Levels.SetActive(true);
         yield return new WaitForSeconds(0.4f);
         MainMenu.SetActive(false);
         Settings.SetActive(false);
-        Levels.SetActive(true);
+
     }
     IEnumerator settings()
     {
-       
+        Settings.SetActive(true);
         yield return new WaitForSeconds(0.4f);
         MainMenu.SetActive(false);
-        Settings.SetActive(true);
+
         Levels.SetActive(false);
     }
     IEnumerator mainmenu()
     {
-        
-        yield return new WaitForSeconds(0.4f);
         MainMenu.SetActive(true);
+        yield return new WaitForSeconds(0.4f);
+
         Settings.SetActive(false);
         Levels.SetActive(false);
     }

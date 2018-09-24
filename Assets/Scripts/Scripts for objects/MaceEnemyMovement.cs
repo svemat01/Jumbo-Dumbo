@@ -7,9 +7,12 @@ public class MaceEnemyMovement : MonoBehaviour {
     public float maxMoveDistance = 10;
     //Set this to your objects initial position when game starts.
     Vector3 origin;
-    public Vector3 destination;
+    public Vector3 offset;
+    Vector3 destination;
     public float speed = 10;
+    public float downspeed;
     bool Up = true;
+    int random;
 
     public bool rotate;
 
@@ -24,27 +27,22 @@ public class MaceEnemyMovement : MonoBehaviour {
         origin = transform.position;
         Debug.Log(transform.position);
         StartCoroutine(GoDown());
+        destination = origin + offset;
     }
 
     IEnumerator GoDown()
     {
         
         yield return new WaitForSecondsRealtime(1);
-        transform.position = Vector3.MoveTowards(transform.position, destination, speed * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, destination, (speed * downspeed) * Time.deltaTime);
 
     }
 
     IEnumerator GoUp()
     {
-        Debug.Log("up");
-        time = 5;
-        while (time > 0)
-        {
-            transform.position = Vector3.MoveTowards(transform.position, origin, speed * Time.deltaTime);
-        }
-        yield return new WaitForSecondsRealtime(5);
-        time = 0;
-        StartCoroutine(GoDown());
+        random = Random.Range(3, 7);
+        Debug.Log(random);
+        yield return new WaitForSecondsRealtime(random);
     }
 
     void Update()

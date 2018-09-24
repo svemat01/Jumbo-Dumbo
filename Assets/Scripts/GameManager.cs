@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+
+
+
 public class GameManager : MonoBehaviour {
 
-    //Variables
+    // Public Variables
     [Header("Variables")]
     public GameObject player;
     public GameObject gameover;
@@ -18,13 +21,19 @@ public class GameManager : MonoBehaviour {
     [Header("Level")]
     public int levelNumber;
 
+    // Private Variables
+    AudioSource audioData;
 
+    public static float volume;
 
     
 
 
     // Use this for initialization
     void Start () {
+        audioData = GetComponent<AudioSource>();
+        audioData.loop = true;
+        audioData.Play(0);
         sceneanim.SetBool("open", false);
         PlayerPrefs.SetInt("Level" + "0", 1);
 	}
